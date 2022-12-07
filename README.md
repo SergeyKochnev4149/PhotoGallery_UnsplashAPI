@@ -31,7 +31,6 @@ Solution: add "jcenter()" to gradle.properties ->dependencyResolutionManagement
 I find solution on stackoverflow.com
 
 7.Added reading JSONObject from URL and getting username from that JSONObject
-
 8. The structure of views has been edited, now they are added dynamically, their content changes depending on the input data
 In this episode, I learned how to create View and ViewGroup in Java code without XML. And learned to add and edit attributes to it
 
