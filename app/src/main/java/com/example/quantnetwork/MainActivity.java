@@ -1,13 +1,16 @@
 package com.example.quantnetwork;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,24 +19,20 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URL;
-
 
 public class MainActivity extends AppCompatActivity {
-    static Drawable currentImage;
+    static String url = "https://api.unsplash.com//photos//?client_id=ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String url = "https://api.unsplash.com//photos//?client_id=ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9";
 
         AndroidNetworking.initialize(this);
         AndroidNetworking.get(url)
@@ -44,20 +43,22 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         Log.d("RES", response.toString());
                         for (int i = 0; i < response.length(); i++) {
-                            String author = "author" + i;
-                            TextView currentView = findViewById(R.id.author1);
-
 
                             try {
                                 JSONObject allImageInfo = response.getJSONObject(i);
-                                String authorUserName = allImageInfo.getJSONObject("user").getString("username");
-//                                JSONObject linksToImage = allImageInfo.getJSONObject("urls");
-//                                String imageAuthor = linksToImage.getString("small");
 
-//                                URL url = new URL("YourUrl");
-//                                Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                String photoDescription = "Description: ";
+                                if (!allImageInfo.getString("description").equals("null"))
+                                    photoDescription += allImageInfo.getString("description");
+                                else if (!allImageInfo.getString("alt_description").equals("null"))
+                                    photoDescription += allImageInfo.getString("alt_description");
+                                else photoDescription += "Without description";
 
-                                currentView.setText(authorUserName);
+                                String author = "Author: " + allImageInfo.getJSONObject("user").getString("name");
+                                String icon = allImageInfo.getJSONObject("urls").getString("thumb");
+                                String imageLink_regular = allImageInfo.getJSONObject("urls").getString("regular");
+                                createRelative(icon, imageLink_regular, author, photoDescription);
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -71,18 +72,75 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("ERROR", anError.toString());
                     }
                 });
+
     }
 
-    public void openPicture(View view) {
-        ImageButton picture = findViewById(view.getId());
-        currentImage = picture.getDrawable();
 
+    public void openPicture(String imageLink) {
+        OnePicture.currentImageLink = imageLink;
         Intent intent = new Intent(MainActivity.this, OnePicture.class);
 
         startActivity(intent);
     }
 
-//    private void create
+
+    private void createRelative(String icon, String imageLink, String author, String photoDescription) {
+
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+                this.getResources().getDisplayMetrics());
 
 
+        RelativeLayout relativeLayout = new RelativeLayout(this);
+        RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        relativeLayout.setLayoutParams(relativeLayoutParams);
+        relativeLayout.setBackgroundColor(Color.WHITE);
+
+
+
+        ImageButton imageButton = new ImageButton(this);
+        imageButton.setId(View.generateViewId());
+        Picasso.get().load(icon).into(imageButton);
+        imageButton.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams imageButtonParams = new RelativeLayout.LayoutParams(dp * 100, dp * 100);
+        imageButtonParams.setMargins(8 * dp, 8 * dp, 8 * dp, 0);
+        imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageButton.setOnClickListener(v -> openPicture(imageLink));
+        relativeLayout.addView(imageButton, imageButtonParams);
+
+
+
+        TextView description = new TextView(this);
+        String text = author + "\n" + photoDescription;
+        description.setText(text);
+        RelativeLayout.LayoutParams descriptionParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        descriptionParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        descriptionParams.addRule(RelativeLayout.RIGHT_OF, imageButton.getId());
+        description.setTextColor(Color.BLACK);
+        description.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        description.setTypeface(Typeface.DEFAULT_BOLD);
+        relativeLayout.addView(description, descriptionParams);
+
+
+
+        View horizontalLine = new View(this);
+        RelativeLayout.LayoutParams horizontalLineParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                dp
+        );
+        horizontalLineParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        horizontalLine.setBackgroundColor(Color.BLACK);
+        relativeLayout.addView(horizontalLine, horizontalLineParams);
+
+
+        LinearLayout linearLayout = findViewById(R.id.mainGroup);
+        linearLayout.addView(relativeLayout, relativeLayoutParams);
+    }
 }
+
