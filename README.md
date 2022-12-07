@@ -9,6 +9,8 @@ When I started writing this app, I knew nothing about Android development. After
 5. How to work with buttons so that they perform actions when pressed
 6. How to parse API information in JSON format and wrap them
 7. How to get a photo by URL
+8. How to get a data from JSON that I need 
+8. How to get image from URL and set it in View
 
 I continue to learn every day. I find all the information on Google, YouTube and developer.android.com
 
@@ -20,8 +22,7 @@ My progress in development this app:
 4. Added many photo with text on screen and added possibility to scroll
 5. Added methods for open current image in new activity with max image size on the screen by clicking on a photo from the list
 6. Added Fast Android Networking Library.
-7. Get a data from JSON that I need 
-8. Get image from URL and set it in View
+
 
 Problem:
 Caused by: org.gradle.internal.resolve.ModuleVersionNotFoundException: Could not find com.amitshekhar.android:android-networking:1.0.2.
