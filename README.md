@@ -23,17 +23,16 @@ My progress in development this app:
 5. Added methods for open current image in new activity with max image size on the screen by clicking on a photo from the list
 6. Added Fast Android Networking Library.
 
+    Problem:
+    Caused by: org.gradle.internal.resolve.ModuleVersionNotFoundException: Could not find com.amitshekhar.android:android-networking:1.0.2.
+    Solution: add "jcenter()" to gradle.properties ->dependencyResolutionManagement
+    ->repositories
 
-Problem:
-Caused by: org.gradle.internal.resolve.ModuleVersionNotFoundException: Could not find com.amitshekhar.android:android-networking:1.0.2.
-Solution: add "jcenter()" to gradle.properties ->dependencyResolutionManagement
-->repositories
+    I find solution on stackoverflow.com
 
-I find solution on stackoverflow.com
-
-7.Added reading JSONObject from URL and getting username from that JSONObject
-8. The structure of views has been edited, now they are added dynamically, their content changes depending on the input data
-In this episode, I learned how to create View and ViewGroup in Java code without XML. And learned to add and edit attributes to it
+7. Added reading JSONObject from URL and getting username from that JSONObject
+8. The structure of views has been edited, now they are added dynamically, their content changes depending on the input data. 
+    In this episode, I learned how to create View and ViewGroup in Java code without XML. And learned to add and edit attributes to it
 
 9. Added possibility to get imageURL from JSONObject and the next get this image from URL with help Picasso library and set it in View.
 I have spent a lot of time learning how to do this.
