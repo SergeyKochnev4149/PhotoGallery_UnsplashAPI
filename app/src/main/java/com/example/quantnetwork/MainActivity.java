@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     static String url = "https://api.unsplash.com//photos//?client_id=ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9";
+    static private int viewCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                                 String icon = allImageInfo.getJSONObject("urls").getString("thumb");
                                 String imageLink_regular = allImageInfo.getJSONObject("urls").getString("regular");
                                 createRelative(icon, imageLink_regular, author, photoDescription);
+                                viewCount++;
 
 
                             } catch (JSONException e) {
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void createRelative(String icon, String imageLink, String author, String photoDescription) {
 
         int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
@@ -97,35 +98,50 @@ public class MainActivity extends AppCompatActivity {
         );
         relativeLayout.setLayoutParams(relativeLayoutParams);
         relativeLayout.setBackgroundColor(Color.WHITE);
-
+        relativeLayout.setId(("relativeLayout" + viewCount).hashCode());
 
 
         ImageButton imageButton = new ImageButton(this);
-        imageButton.setId(View.generateViewId());
         Picasso.get().load(icon).into(imageButton);
         imageButton.setBackgroundColor(Color.WHITE);
         RelativeLayout.LayoutParams imageButtonParams = new RelativeLayout.LayoutParams(dp * 100, dp * 100);
-        imageButtonParams.setMargins(8 * dp, 8 * dp, 8 * dp, 0);
-        imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageButtonParams.setMargins(4 * dp, 4 * dp, 4*dp, 4 * dp);
+        imageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageButton.setOnClickListener(v -> openPicture(imageLink));
+        imageButton.setId(("imageButton" + viewCount).hashCode());
         relativeLayout.addView(imageButton, imageButtonParams);
 
 
+        TextView authorName = new TextView(this);
+        authorName.setText(author);
+        RelativeLayout.LayoutParams authorNameParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        authorNameParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        authorNameParams.setMargins(4*dp, 0, 0, 0);
+        authorNameParams.addRule(RelativeLayout.RIGHT_OF, imageButton.getId());
+        authorName.setTextColor(Color.BLACK);
+        authorName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        authorName.setTypeface(Typeface.DEFAULT_BOLD);
+        authorName.setId(("authorName" + viewCount).hashCode());
+        relativeLayout.addView(authorName, authorNameParams);
+
 
         TextView description = new TextView(this);
-        String text = author + "\n" + photoDescription;
-        description.setText(text);
+        description.setText(photoDescription);
         RelativeLayout.LayoutParams descriptionParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        descriptionParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        descriptionParams.setMargins(4*dp, 0, 8 * dp, 8 * dp);
         descriptionParams.addRule(RelativeLayout.RIGHT_OF, imageButton.getId());
+        descriptionParams.addRule(RelativeLayout.BELOW, authorName.getId());
         description.setTextColor(Color.BLACK);
-        description.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        description.setTypeface(Typeface.DEFAULT_BOLD);
+        description.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        description.setTypeface(Typeface.DEFAULT);
+        description.setId(("description" + viewCount).hashCode());
         relativeLayout.addView(description, descriptionParams);
-
 
 
         View horizontalLine = new View(this);
@@ -134,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 dp
         );
         horizontalLineParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
         horizontalLine.setBackgroundColor(Color.BLACK);
+        horizontalLine.setId(("horizontalLine" + viewCount).hashCode());
         relativeLayout.addView(horizontalLine, horizontalLineParams);
 
 
