@@ -1,4 +1,4 @@
-# TestTask_company2
+# PhotoGallery_UnsplashApi
 In result this app will parse info from https://unsplash.com and then create activity with list of images and their decription. When we click on image, created new activity where image open in full screen size
 
 When I started writing this app, I knew nothing about Android development. After spending about 57 hours, I realized:
