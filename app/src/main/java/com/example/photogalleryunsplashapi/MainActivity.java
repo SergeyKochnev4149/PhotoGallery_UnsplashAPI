@@ -1,4 +1,4 @@
-package com.example.quantnetwork;
+package com.example.photogalleryunsplashapi;
 
 import android.content.Intent;
 import android.graphics.Color;

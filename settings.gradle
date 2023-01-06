@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
     }
 }
-rootProject.name = "QuantNetwork"
+rootProject.name = "PhotoGallery_UnsplashApi"
 include ':app'

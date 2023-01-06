@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.quantnetwork'
+    namespace 'com.example.photogalleryunsplashapi'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.quantnetwork"
+        applicationId "com.example.photogalleryunsplashapi"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
-    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

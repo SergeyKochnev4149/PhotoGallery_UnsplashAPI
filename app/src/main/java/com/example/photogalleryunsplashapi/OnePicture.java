@@ -1,4 +1,4 @@
-package com.example.quantnetwork;
+package com.example.photogalleryunsplashapi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
